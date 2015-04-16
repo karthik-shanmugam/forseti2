@@ -1,10 +1,22 @@
+// hack jquery to cache lookups
+var cache = {};
+function cached_$(query) {
+	if (cache[query] !== undefined) {
+		return cache[query];
+	} else {
+		cache[query] = $(query);
+		return cache[query];
+	}
+}
+
+
 function updateCommsStatus(status) {
-	var heading = $('#config-heading');
+	var heading = cached_$('#config-heading');
 	heading.removeClass("btn-info");
 	heading.removeClass("btn-warning");
 	heading.removeClass("btn-danger");
 	heading.removeClass("btn-success");
-	var status_span = $('#config-status');
+	var status_span = cached_$('#config-status');
 	status_span.removeClass("label-info");
 	status_span.removeClass("label-warning");
 	status_span.removeClass("label-danger");
@@ -50,10 +62,10 @@ function updateGameClock(data) {
 		hr_seconds = String(disp_seconds);
 	}
 	var hr_time = String(minutes) + ":" + hr_seconds;
-	var game_clock = $('#game-clock');
+	var game_clock = cached_$('#game-clock');
 	game_clock.text(hr_time);
 
-	var clock_bar = $('#clock-bar');
+	var clock_bar = cached_$('#clock-bar');
 	clock_bar.css("width", String(time / total_stage_time * 100) + "%");
 	clock_bar.removeClass("progress-bar-info");
 	clock_bar.removeClass("progress-bar-warning");
@@ -65,11 +77,11 @@ function updateGameClock(data) {
 		clock_bar.addClass("progress-bar-warning");
 	}
 
-	var bonus_bar = $('#bonus-bar');
+	var bonus_bar = cached_$('#bonus-bar');
 	var bonus_time = data['bonus_time']
 	bonus_bar.css("width", String(bonus_time / 30 * 100) + "%");
 
-	var game_mode_div = $('#game-mode');
+	var game_mode_div = cached_$('#game-mode');
 	switch (mode) {
 		case "Setup":
 			game_mode_div.text("Setup");
@@ -101,58 +113,58 @@ function updateScore(data) {
     var i;
 	for (i = 2; i < 4; i++) {
 		team_strings[i] = String(team_numbers[i]) + " " + team_names[i];
-		$('#team' + String(i)).text(team_strings[i]);
+		cached_$('#team' + String(i)).text(team_strings[i]);
 	}
 	for (i = 0; i < 2; i++) {
 		team_strings[i] = team_names[i] + " " + String(team_numbers[i]);
-		$('#team' + String(i)).text(team_strings[i]);
+		cached_$('#team' + String(i)).text(team_strings[i]);
 	}
 	// update match number
 	var match_number = data['match_number'];
-	$('#match-number').text(match_number)
+	cached_$('#match-number').text(match_number)
 
 
 	// update the scores
 	var blue_scores = data['blue_points'];
 	var gold_scores = data['gold_points'];
-	$('#blue-total-score').text(blue_scores[0]);
-	$('#gold-total-score').text(gold_scores[0]);
-	$('#blue-autonomous-points').text(blue_scores[1]);
-	$('#gold-autonomous-points').text(gold_scores[1]);
-	$('#blue-normal-points').text(blue_scores[2]);
-	$('#gold-normal-points').text(gold_scores[2]);
-	$('#blue-permanent-points').text(blue_scores[3]);
-	$('#gold-permanent-points').text(gold_scores[3]);
-	$('#blue-penalties').text(-blue_scores[4]);
-	$('#gold-penalties').text(-gold_scores[4]);
+	cached_$('#blue-total-score').text(blue_scores[0]);
+	cached_$('#gold-total-score').text(gold_scores[0]);
+	cached_$('#blue-autonomous-points').text(blue_scores[1]);
+	cached_$('#gold-autonomous-points').text(gold_scores[1]);
+	cached_$('#blue-normal-points').text(blue_scores[2]);
+	cached_$('#gold-normal-points').text(gold_scores[2]);
+	cached_$('#blue-permanent-points').text(blue_scores[3]);
+	cached_$('#gold-permanent-points').text(gold_scores[3]);
+	cached_$('#blue-penalties').text(-blue_scores[4]);
+	cached_$('#gold-penalties').text(-gold_scores[4]);
 
   if (data['bonus_possession'] == 2) {
-	$('#blue-bonus-points').text(data['bonus_points'])
-	$('#gold-bonus-points').text("");
+		cached_$('#blue-bonus-points').text(data['bonus_points'])
+		cached_$('#gold-bonus-points').text("");
   } else if (data['bonus_possession'] == 1) {
-	$('#blue-bonus-points').text("");
-	$('#gold-bonus-points').text(data['bonus_points'])
+		cached_$('#blue-bonus-points').text("");
+		cached_$('#gold-bonus-points').text(data['bonus_points'])
   } else {
-	$('#blue-bonus-points').text("");
-	$('#gold-bonus-points').text("");
+		cached_$('#blue-bonus-points').text("");
+		cached_$('#gold-bonus-points').text("");
   }
 
-	$('#old_blue_total_score').text(blue_scores[0]);
-	$('#old_gold_total_score').text(gold_scores[0]);
-	$('#old_blue_autonomous_points').text(blue_scores[1]);
-	$('#old_gold_autonomous_points').text(gold_scores[1]);
-	$('#old_blue_normal_points').text(blue_scores[2]);
-	$('#old_gold_normal_points').text(gold_scores[2]);
-	$('#old_blue_permanent_points').text(blue_scores[3]);
-	$('#old_gold_permanent_points').text(gold_scores[3]);
-	$('#old_blue_penalty').text(blue_scores[4]);
-	$('#old_gold_penalty').text(gold_scores[4]);
-	$('#old_bonus_points').text(data['bonus_points']);
+	cached_$('#old_blue_total_score').text(blue_scores[0]);
+	cached_$('#old_gold_total_score').text(gold_scores[0]);
+	cached_$('#old_blue_autonomous_points').text(blue_scores[1]);
+	cached_$('#old_gold_autonomous_points').text(gold_scores[1]);
+	cached_$('#old_blue_normal_points').text(blue_scores[2]);
+	cached_$('#old_gold_normal_points').text(gold_scores[2]);
+	cached_$('#old_blue_permanent_points').text(blue_scores[3]);
+	cached_$('#old_gold_permanent_points').text(gold_scores[3]);
+	cached_$('#old_blue_penalty').text(blue_scores[4]);
+	cached_$('#old_gold_penalty').text(gold_scores[4]);
+	cached_$('#old_bonus_points').text(data['bonus_points']);
 	recalculateTotals();
 }
 
 function updateHeartbeat(data) {
-	var hb = $('#heartbeat');
+	var hb = cached_$('#heartbeat');
 	if (data['stored_a']) {
 		hb.addClass('btn-info');
 	} else {
@@ -174,7 +186,7 @@ function failedToGetInfo() {
 function updateInterface() {
 	// set wall clock
 	time = new Date().toLocaleTimeString();
-	$('#wall-clock').text(time);
+	cached_$('#wall-clock').text(time);
 
 	$.get('/api/v1/all-info', {}, processInfo).fail(failedToGetInfo);
 }
@@ -183,15 +195,15 @@ function submitAdjustment(e) {
 	e.preventDefault();
 	$.post('/api/v1/score-delta', $(this).serialize());
 	recalculateTotals();
-	$('#adjust-form')[0].reset();
+	cached_$('#adjust-form')[0].reset();
 }
 
 function totalHelper(name) {
-  $("#new_" + name).val(parseInt($("#old_" + name).text()) + parseInt($("input[name=" + name + "]").val()));
+  cached_$("#new_" + name).val(parseInt($("#old_" + name).text()) + parseInt($("input[name=" + name + "]").val()));
 }
 
 function diffHelper(name) {
-  $("input[name=" + name + "]").val(parseInt($("#new_" + name).val()) - parseInt($("#old_" + name).text()));
+  cached_$("input[name=" + name + "]").val(parseInt($("#new_" + name).val()) - parseInt($("#old_" + name).text()));
 }
 
 function recalculateTotals() {
@@ -223,26 +235,26 @@ function recalculateDiffs() {
 }
 
 function recalculateSum() {
-  $("#new_blue_total_score").text(
-	parseInt($("#new_blue_autonomous_points").val()) +
-	  parseInt($("#new_blue_normal_points").val()) +
-	  parseInt($("#new_blue_permanent_points").val()) +
-      (parseInt($("#blue-bonus-points").text()) || 0) -
-	  parseInt($("#new_blue_penalty").val())
+  cached_$("#new_blue_total_score").text(
+	parseInt(cached_$("#new_blue_autonomous_points").val()) +
+	  parseInt(cached_$("#new_blue_normal_points").val()) +
+	  parseInt(cached_$("#new_blue_permanent_points").val()) +
+      (parseInt(cached_$("#blue-bonus-points").text()) || 0) -
+	  parseInt(cached_$("#new_blue_penalty").val())
   );
-  $("#diff_blue_total_score").text(
-	parseInt($("#new_blue_total_score").text()) -
-	  parseInt($("#old_blue_total_score").text()));
-  $("#new_gold_total_score").text(
-	parseInt($("#new_gold_autonomous_points").val()) +
-	  parseInt($("#new_gold_normal_points").val()) +
-	  parseInt($("#new_gold_permanent_points").val()) +
-      (parseInt($("#gold-bonus-points").text()) || 0) -
-	  parseInt($("#new_gold_penalty").val())
+  cached_$("#diff_blue_total_score").text(
+	parseInt(cached_$("#new_blue_total_score").text()) -
+	  parseInt(cached_$("#old_blue_total_score").text()));
+  cached_$("#new_gold_total_score").text(
+	parseInt(cached_$("#new_gold_autonomous_points").val()) +
+	  parseInt(cached_$("#new_gold_normal_points").val()) +
+	  parseInt(cached_$("#new_gold_permanent_points").val()) +
+      (parseInt(cached_$("#gold-bonus-points").text()) || 0) -
+	  parseInt(cached_$("#new_gold_penalty").val())
   );
-  $("#diff_gold_total_score").text(
-	parseInt($("#new_gold_total_score").text()) -
-	  parseInt($("#old_gold_total_score").text()));
+  cached_$("#diff_gold_total_score").text(
+	parseInt(cached_$("#new_gold_total_score").text()) -
+	  parseInt(cached_$("#old_gold_total_score").text()));
 }
 
 $( document ).ready(function($) {
