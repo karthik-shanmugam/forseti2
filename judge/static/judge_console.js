@@ -1,10 +1,10 @@
 function updateCommsStatus(status) {
-	heading = $('#config-heading');
+	var heading = $('#config-heading');
 	heading.removeClass("btn-info");
 	heading.removeClass("btn-warning");
 	heading.removeClass("btn-danger");
 	heading.removeClass("btn-success");
-	status_span = $('#config-status');
+	var status_span = $('#config-status');
 	status_span.removeClass("label-info");
 	status_span.removeClass("label-warning");
 	status_span.removeClass("label-danger");
@@ -33,26 +33,27 @@ function updateCommsStatus(status) {
 }
 
 function updateGameClock(data) {
-	mode = data['stage_name'];
-	stage_time = data['stage_time'];
-	total_stage_time = data['total_stage_time'];
+	var mode = data['stage_name'];
+	var stage_time = data['stage_time'];
+	var total_stage_time = data['total_stage_time'];
 	// convert input "gametime" into 
-	time = total_stage_time - stage_time;
+	var time = total_stage_time - stage_time;
 
-	minutes = Math.floor(time / 60);
-	seconds = Math.floor(time % 60);
-	disp_seconds = Math.ceil(time % 60);
+	var minutes = Math.floor(time / 60);
+	var seconds = Math.floor(time % 60);
+	var disp_seconds = Math.ceil(time % 60);
 
+	var hr_seconds;
 	if (disp_seconds < 10) {
 		hr_seconds = "0" + String(disp_seconds);
 	} else {
 		hr_seconds = String(disp_seconds);
 	}
-	hr_time = String(minutes) + ":" + hr_seconds;
-	game_clock = $('#game-clock');
+	var hr_time = String(minutes) + ":" + hr_seconds;
+	var game_clock = $('#game-clock');
 	game_clock.text(hr_time);
 
-	clock_bar = $('#clock-bar');
+	var clock_bar = $('#clock-bar');
 	clock_bar.css("width", String(time / total_stage_time * 100) + "%");
 	clock_bar.removeClass("progress-bar-info");
 	clock_bar.removeClass("progress-bar-warning");
@@ -64,11 +65,11 @@ function updateGameClock(data) {
 		clock_bar.addClass("progress-bar-warning");
 	}
 
-	bonus_bar = $('#bonus-bar');
-	bonus_time = data['bonus_time']
+	var bonus_bar = $('#bonus-bar');
+	var bonus_time = data['bonus_time']
 	bonus_bar.css("width", String(bonus_time / 30 * 100) + "%");
 
-	game_mode_div = $('#game-mode');
+	var game_mode_div = $('#game-mode');
 	switch (mode) {
 		case "Setup":
 			game_mode_div.text("Setup");
@@ -94,8 +95,8 @@ function updateGameClock(data) {
 
 function updateScore(data) {
 	// update the team names
-	team_numbers = data['team_numbers'];
-	team_names = data['team_names'];
+	var team_numbers = data['team_numbers'];
+	var team_names = data['team_names'];
 	var team_strings = new Array();
     var i;
 	for (i = 2; i < 4; i++) {
@@ -107,13 +108,13 @@ function updateScore(data) {
 		$('#team' + String(i)).text(team_strings[i]);
 	}
 	// update match number
-	match_number = data['match_number'];
+	var match_number = data['match_number'];
 	$('#match-number').text(match_number)
 
 
 	// update the scores
-	blue_scores = data['blue_points'];
-	gold_scores = data['gold_points'];
+	var blue_scores = data['blue_points'];
+	var gold_scores = data['gold_points'];
 	$('#blue-total-score').text(blue_scores[0]);
 	$('#gold-total-score').text(gold_scores[0]);
 	$('#blue-autonomous-points').text(blue_scores[1]);
@@ -151,7 +152,7 @@ function updateScore(data) {
 }
 
 function updateHeartbeat(data) {
-	hb = $('#heartbeat');
+	var hb = $('#heartbeat');
 	if (data['stored_a']) {
 		hb.addClass('btn-info');
 	} else {
