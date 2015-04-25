@@ -122,6 +122,7 @@ function updateScore(data) {
 	// update match number
 	var match_number = data['match_number'];
 	cached_$('#match-number').text(match_number)
+	cached_$('#order').text(data['order'])
 
 
 	// update the scores

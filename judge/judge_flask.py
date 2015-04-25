@@ -53,6 +53,7 @@ class FlaskInfo(object):
         self.team_numbers = [0, 0, 0, 0]
         self.team_names = ['', '', '', '']
         self.match_number = -1
+        self.order = "Food!"
 
     def __setattr__(self, name, value):
         self.__dict__["_last_update_time"] = time.time()
@@ -81,7 +82,8 @@ def all_info():
         'bonus_points' : fi.bonus_points,
         'team_numbers' : fi.team_numbers,
         'team_names' : fi.team_names,
-        'match_number' : fi.match_number
+        'match_number' : fi.match_number,
+        'order' : fi.order
     }
     js = json.dumps(data)
     print js
@@ -112,6 +114,7 @@ def handle_match_init(channel, data):
     fi.team_numbers = m.team_numbers
     fi.team_names = m.team_names
     fi.match_number = m.match_number
+    fi.order = m.order
 
 def main():
     global lc, seq
